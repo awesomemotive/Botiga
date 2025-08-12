@@ -25,3 +25,11 @@
         max-width: 200px;
     }
 }
+
+.botiga-side-mini-cart__body {
+    .woocommerce-mini-cart__total.botiga-final-total {
+        .price-data {
+            max-width: 300px;
+        }
+    }
+}
