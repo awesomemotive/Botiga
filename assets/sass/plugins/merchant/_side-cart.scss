@@ -1,4 +1,4 @@
-.merchant-quantity-plus, 
+.merchant-quantity-plus,
 .merchant-quantity-minus {
     display: none !important;
 }
@@ -16,6 +16,20 @@
             &:hover {
                 color: #1a1a1a !important;
             }
+        }
+    }
+}
+
+.woocommerce-mini-cart__total.botiga-final-total {
+    .price-data {
+        max-width: 200px;
+    }
+}
+
+.botiga-side-mini-cart__body {
+    .woocommerce-mini-cart__total.botiga-final-total {
+        .price-data {
+            max-width: 300px;
         }
     }
 }

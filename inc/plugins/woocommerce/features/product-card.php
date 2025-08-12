@@ -219,13 +219,22 @@ add_filter( 'woocommerce_loop_add_to_cart_link', 'botiga_filter_loop_add_to_cart
 function botiga_page_has_woo_blocks() {
 	global $post;
 
-	if( $post ) {
-		if( isset( $post->post_content ) && strpos( $post->post_content, 'woocommerce/' ) ) {
-            return true;
-        }
+	$result = false;
+	if ( $post ) {
+		if ( isset( $post->post_content ) && strpos( $post->post_content, 'woocommerce/' ) ) {
+			$result = true;
+		}
 	}
 
-	return false;
+	/**
+	 * Hook 'botiga_page_has_woo_blocks' to allow filtering the page whether a page has WooCommerce blocks.
+	 *
+	 * @param bool   $result       Whether the page has a WooCommerce block.
+	 * @param string $post_content string The content of the post.
+	 *
+	 * @since 2.3.4
+	 */
+	return apply_filters( 'botiga_page_has_woo_blocks', $result, $post->post_content );
 }
 
 /**
@@ -240,17 +249,27 @@ function botiga_page_has_woo_shortcode() {
 		'latest_arrivals', // third-party shortcode
 	);
 
-	if( $post ) {
-		if( isset( $post->post_content ) ) { 
-			foreach( $shortcodes as $shortcode ) {
-                if( has_shortcode( $post->post_content, $shortcode ) ) {
-                    return true;
-                }
-            }
-        }
+	$result = false;
+	if ( $post ) {
+		if ( isset( $post->post_content ) ) {
+			foreach ( $shortcodes as $shortcode ) {
+				if ( has_shortcode( $post->post_content, $shortcode ) ) {
+					$result = true;
+					break;
+				}
+			}
+		}
 	}
 
-	return false;
+	/**
+	 * Hook 'botiga_page_has_woo_shortcode' to allow filtering the page whether a page has the defined shortcodes.
+	 *
+	 * @param bool   $result       Whether the page has a WooCommerce shortcode.
+	 * @param string $post_content string The content of the post.
+	 *
+	 * @since 2.3.4
+	 */
+	return apply_filters( 'botiga_page_has_woo_shortcode', $result, $post->post_content );
 }
 
 /**

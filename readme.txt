@@ -7,7 +7,7 @@ Requires at least: 5.4
 Version: 2.3.3
 Tested up to: 6.8
 Requires PHP: 7
-Stable tag: 2.3.2
+Stable tag: 2.3.4
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,9 @@ Launch your store with Botiga. A beautiful theme that is optimized for both the 
 Botiga includes support for WooCommerce and for Infinite Scroll in Jetpack.
 
 == Changelog ==
+= 2.3.4 =
+Fixed - Issue where botiga_nav_menu_link_attributes returned a new class attribute without preserving existing values
+
 = 2.3.3 =
 Fixed - Resolved issue where range slider controls were affected by the header builder.
 Fixed - Main header row bottom border now supports solid color properly.

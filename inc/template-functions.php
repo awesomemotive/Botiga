@@ -44,7 +44,12 @@ add_filter( 'nav_menu_css_class', 'botiga_nav_menu_css_class', 10, 4 );
  * @return array $atts Updated attributes for the li element.
  */
 function botiga_nav_menu_link_attributes( $atts, $menu_item, $args, $depth ) {
-	$atts[ 'class' ] = 'botiga-dropdown-link';
+	if ( isset( $atts['class'] ) ) {
+		$atts['class'] .= ' botiga-dropdown-link';
+	} else {
+        $atts['class'] = 'botiga-dropdown-link';
+    }
+
 	return $atts;
 }
 add_filter( 'nav_menu_link_attributes', 'botiga_nav_menu_link_attributes', 10, 4 );
