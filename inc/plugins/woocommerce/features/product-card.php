@@ -234,7 +234,7 @@ function botiga_page_has_woo_blocks() {
 	 *
 	 * @since 2.3.4
 	 */
-	return apply_filters( 'botiga_page_has_woo_blocks', $result, $post->post_content );
+	return apply_filters( 'botiga_page_has_woo_blocks', $result, $post ? $post->post_content : '' );
 }
 
 /**
@@ -269,7 +269,7 @@ function botiga_page_has_woo_shortcode() {
 	 *
 	 * @since 2.3.4
 	 */
-	return apply_filters( 'botiga_page_has_woo_shortcode', $result, $post->post_content );
+	return apply_filters( 'botiga_page_has_woo_shortcode', $result, $post ? $post->post_content : '' );
 }
 
 /**

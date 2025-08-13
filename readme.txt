@@ -4,10 +4,10 @@ Contributors: athemes
 Tags: e-commerce, custom-menu, custom-logo, grid-layout, featured-images, right-sidebar, left-sidebar, custom-colors, editor-style, theme-options, threaded-comments, translation-ready, blog, one-column, two-columns, rtl-language-support, custom-background, custom-header, footer-widgets, post-formats, wide-blocks
 
 Requires at least: 5.4
-Version: 2.3.3
+Version: 2.3.5
 Tested up to: 6.8
 Requires PHP: 7
-Stable tag: 2.3.4
+Stable tag: 2.3.5
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,9 @@ Launch your store with Botiga. A beautiful theme that is optimized for both the 
 Botiga includes support for WooCommerce and for Infinite Scroll in Jetpack.
 
 == Changelog ==
+= 2.3.5 =
+Fixed - Error appearing sometimes when the post content is empty.
+
 = 2.3.4 =
 Fixed - Issue where botiga_nav_menu_link_attributes returned a new class attribute without preserving existing values
 
