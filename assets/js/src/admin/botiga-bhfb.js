@@ -440,7 +440,7 @@
             mobileElementsWrapper.html( '' );
 
             let cprefix = 'hb';
-            if( _this.currentBuilderType && _this.currentBuilderType === 'footer' ) {
+            if( _this.currentBuilderType === 'footer' ) {
                 cprefix = 'fb';
             }
 
@@ -495,20 +495,55 @@
 
             if( _this.currentBuilderType === 'header' ) {
 
-                // Header Desktop Components.
-                $( '.botiga-header-builder-available-components' ).html( '' );
-                $( '.botiga-header-builder-available-components' ).html( $( '.botiga-bhfb-header .botiga-bhfb-elements-desktop' ).html() );
+                // Header Desktop Components - regenerate instead of copying
+                const headerElements = _this.getElementsUnused();
+                let headerDesktopHTML = '';
+                
+                if( headerElements.desktop.length ) {
+                    for( const element of headerElements.desktop ) {
+                        headerDesktopHTML += '<div class="botiga-bhfb-element botiga-bhfb-element-desktop">' +
+                            '<a href="#" class="bhfb-button" data-bhfb-id="'+ element.id +'" data-bhfb-focus-section="botiga_section_hb_component__'+ element.id +'">'+ element.label +'</a>' + 
+                        '</div>';
+                    }
+                } else {
+                    headerDesktopHTML = '<p class="bhfb-elements-message">'+ botiga_hfb.i18n.elementsMessage +'</p>';
+                }
 
-                // Header Mobile Components.
-                $( '.botiga-header-builder-available-mobile-components' ).html( '' );
-                $( '.botiga-header-builder-available-mobile-components' ).html( $( '.botiga-bhfb-header .botiga-bhfb-elements-mobile' ).html() );
+                $( '.botiga-header-builder-available-components' ).html( headerDesktopHTML );
+
+                // Header Mobile Components - regenerate instead of copying
+                let headerMobileHTML = '';
+                
+                if( headerElements.mobile.length ) {
+                    for( const element of headerElements.mobile ) {
+                        headerMobileHTML += '<div class="botiga-bhfb-element botiga-bhfb-element-mobile">' +
+                            '<a href="#" class="bhfb-button" data-bhfb-id="'+ element.id +'" data-bhfb-focus-section="botiga_section_hb_component__'+ element.id +'">'+ element.label +'</a>' + 
+                        '</div>';
+                    }
+                } else {
+                    headerMobileHTML = '<p class="bhfb-elements-message">'+ botiga_hfb.i18n.elementsMessage +'</p>';
+                }
+
+                $( '.botiga-header-builder-available-mobile-components' ).html( headerMobileHTML );
             }
 
             if( _this.currentBuilderType === 'footer' ) {
 
-                // Footer Components.
-                $( '.botiga-footer-builder-available-footer-components' ).html( '' );
-                $( '.botiga-footer-builder-available-footer-components' ).html( $( '.botiga-bhfb-footer .botiga-bhfb-elements-desktop' ).html() );
+                // Footer Components - regenerate instead of copying
+                const footerElements = _this.getElementsUnused();
+                let footerHTML = '';
+                
+                if( footerElements.desktop.length ) {
+                    for( const element of footerElements.desktop ) {
+                        footerHTML += '<div class="botiga-bhfb-element botiga-bhfb-element-desktop">' +
+                            '<a href="#" class="bhfb-button" data-bhfb-id="'+ element.id +'" data-bhfb-focus-section="botiga_section_fb_component__'+ element.id +'">'+ element.label +'</a>' + 
+                        '</div>';
+                    }
+                } else {
+                    footerHTML = '<p class="bhfb-elements-message">'+ botiga_hfb.i18n.elementsMessage +'</p>';
+                }
+
+                $( '.botiga-footer-builder-available-footer-components' ).html( footerHTML );
 
             }
         },
