@@ -34,6 +34,16 @@
     transition: ease background-color 300ms, ease border-bottom-color 300ms, ease height 300ms;
 }
 
+// Hide rows when sticky header is active and they shouldn't be visible
+.sticky-header-active .bhfb-sticky-hidden {
+    display: none !important;
+}
+
+// Hide bottom row when main row is sticky
+.sticky-header-active .sticky-row-main-header-row .bhfb-below_header_row {
+    display: none !important;
+}
+
 .bhfb-main_header_row {
     min-height: 100px;
 }
