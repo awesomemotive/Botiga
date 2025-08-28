@@ -780,7 +780,17 @@ botiga.stickyHeader = {
 		let topVal = 0,
 			convertToPositive = false;
 
+		// Remove any existing sticky visibility classes
+		above_header_row.classList.remove( 'bhfb-sticky-hidden' );
+		main_header_row.classList.remove( 'bhfb-sticky-hidden' );
+		below_header_row.classList.remove( 'bhfb-sticky-hidden' );
+
 		if( bhfb.classList.contains( 'sticky-row-main-header-row' ) ) {
+			// Hide bottom row when main row is sticky
+			if( ! below_header_row.classList.contains( 'bt-d-none' ) ) {
+				below_header_row.classList.add( 'bhfb-sticky-hidden' );
+			}
+
 			if( ! above_header_row.classList.contains( 'bt-d-none' ) ) {
 				topVal = above_header_row.clientHeight;
 
