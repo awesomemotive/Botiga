@@ -152,7 +152,7 @@ jobs:
     name: Deploy at wpfc.io sites
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-22.04
-    needs: builds
+    needs: build
 
     steps:
       -   name: Setup key
