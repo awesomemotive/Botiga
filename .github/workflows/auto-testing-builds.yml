@@ -74,6 +74,7 @@ jobs:
           [ -d assets/js/src ] && rm -r assets/js/src
           [ -d node_modules ] && rm -r node_modules
           [ -d tests ] && rm -r tests
+          [ -d .cursor ] && rm -r .cursor
           [ -f .gitattributes ] && rm .gitattributes
           [ -f .gitignore ] && rm .gitignore
           [ -f phpcs.xml ] && rm phpcs.xml
