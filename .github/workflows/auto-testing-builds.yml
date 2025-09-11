@@ -95,7 +95,7 @@ jobs:
         run: rsync -av --progress --exclude=${{ env.PROJECT_NAME }} . ${{ env.PROJECT_NAME }}/
 
       # Creates a zip archive of the build directory.
-      - name: Create Artifact
+      - name: Create Zip file
         run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
 
       # The following steps are for uploading the build to hub.wpforms.com.
@@ -145,7 +145,8 @@ jobs:
       - name: Upload file list as artifact
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.PROJECT_NAME }}.zip
+          name: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}
 
   wpfcio-deployments:
     name: Deploy at wpfc.io sites
@@ -176,7 +177,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          path: ${{ env.PROJECT_NAME }}.zip
+          name: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}
 
       - name: Display structure of downloaded files
         run: ls -R
@@ -192,7 +194,7 @@ jobs:
                 --progress \
                 --whole-file \
                 --remove-source-files \
-                ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.zip \
+                ${{ env.PROJECT_NAME }}.zip \
                 qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/
 
       -   name: Install on qa-botiga.athemes.wpfc.io
