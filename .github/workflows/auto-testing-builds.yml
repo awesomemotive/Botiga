@@ -10,6 +10,7 @@ jobs:
   build:
     # Specifies the runner environment for the job. In this case, it\'s Ubuntu 22.04.
     runs-on: ubuntu-22.04
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
 
     # Defines the sequence of steps that make up the \'build\' job.
     steps:
@@ -27,7 +28,7 @@ jobs:
 
       # Checks out the repository\'s code so the workflow can access it.
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       # Sets up PHP version 8.0 and installs Composer.
       - name: Setup PHP 8.0
@@ -67,9 +68,14 @@ jobs:
       # This includes development-related files, version control directories, and source assets.
       - name: Clean unneeded files
         run: |
-          [ -f .gitattributes ] && rm .gitattributes
           [ -d .github ] && rm -r .github
           [ -d .git ] && rm -r .git
+          [ -d assets/sass ] && rm -r assets/sass
+          [ -d assets/js/src ] && rm -r assets/js/src
+          [ -d node_modules ] && rm -r node_modules
+          [ -d tests ] && rm -r tests
+          [ -d .cursor ] && rm -r .cursor
+          [ -f .gitattributes ] && rm .gitattributes
           [ -f .gitignore ] && rm .gitignore
           [ -f phpcs.xml ] && rm phpcs.xml
           [ -f wpgulp.config.js ] && rm wpgulp.config.js
@@ -77,13 +83,8 @@ jobs:
           [ -f composer.json ] && rm composer.json
           [ -f composer.lock ] && rm composer.lock
           [ -f package.json ] && rm package.json
-          [ -f package-lock.json ] && rm package-lock.json
           [ -f readme.md ] && rm readme.md
-          [ -f playwright.config.js ] && rm playwright.config.js
-          [ -d assets/sass ] && rm -r assets/sass
-          [ -d assets/js/src ] && rm -r assets/js/src
-          [ -d node_modules ] && rm -r node_modules
-          [ -d e2etests ] && rm -r e2etests
+          [ -f package-lock.json ] && rm package-lock.json
 
       # Creates a new directory named after the project to hold the build files.
       - name: Create directory for the build
