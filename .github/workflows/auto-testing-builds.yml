@@ -155,12 +155,23 @@ jobs:
     needs: build
 
     steps:
-      -   name: Setup key
-          run: |
-            echo "${{ SECRETS.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > /root/.ssh/id_ed25519
-            chmod 600 /root/.ssh/id_ed25519 && chmod 700 /root/.ssh
+      - name: Setup SSH key
+        run: |
+            mkdir -p ~/.ssh
+            echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+            chmod 600 ~/.ssh/id_ed25519
+            chmod 700 ~/.ssh
 
-      - name: Upload to x.athemes.wpfc.io
+        name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}.zip
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Upload to qa-botiga.athemes.wpfc.io
         run: |
           rsync --rsh="ssh -o StrictHostKeyChecking=no -p18765" \
                 --ignore-times \
@@ -174,7 +185,7 @@ jobs:
                 builds/ \
                 qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/plugins/
 
-      -   name: Install on x.athemes.wpfc.io
+      -   name: Install on qa-botiga.athemes.wpfc.io
           run: |
               echo "Installing: ${{ env.PROJECT_NAME }}.zip"
               ssh qabotigaathemes@159.89.184.130 "cd /sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes && rm -rf ${{ env.PROJECT_NAME }} && unzip ${{ env.PROJECT_NAME }}.zip && rm ${{ env.PROJECT_NAME }}.zip" < /dev/null
