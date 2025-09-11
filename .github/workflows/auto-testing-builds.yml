@@ -185,7 +185,7 @@ jobs:
 
       - name: Upload to qa-botiga.athemes.wpfc.io
         run: |
-          rsync --rsh="ssh -o StrictHostKeyChecking=no -p18765" \
+          rsync --rsh="ssh -o StrictHostKeyChecking=no" \
                 --ignore-times \
                 --archive \
                 --verbose \
@@ -194,8 +194,8 @@ jobs:
                 --progress \
                 --whole-file \
                 --remove-source-files \
-                builds/ \
-                qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/plugins/
+                ${{ env.PROJECT_NAME }}.zip \
+                qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/
 
       -   name: Install on qa-botiga.athemes.wpfc.io
           run: |
