@@ -150,7 +150,7 @@ jobs:
 
   wpfcio-deployments:
     name: Deploy at wpfc.io sites
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/feature/394-qa-botiga-auto-deploy'
     runs-on: ubuntu-22.04
     needs: build
 
