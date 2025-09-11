@@ -146,7 +146,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}.zip
-          path: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}
 
   wpfcio-deployments:
     name: Deploy at wpfc.io sites
@@ -178,7 +178,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}.zip
-          path: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}
 
       - name: Display structure of downloaded files
         run: ls -R
@@ -194,7 +194,7 @@ jobs:
                 --progress \
                 --whole-file \
                 --remove-source-files \
-                ${{ env.PROJECT_NAME }}.zip \
+                ${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.zip \
                 qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/
 
       -   name: Install on qa-botiga.athemes.wpfc.io
