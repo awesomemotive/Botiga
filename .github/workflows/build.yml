@@ -72,8 +72,8 @@ jobs:
       - name: Create directory for build zip
         run: mkdir ${{ env.PROJECT_NAME }}
 
-      - name: Copy files to botiga directory
-        run: rsync -av --progress --exclude=${{ env.PROJECT_NAME }} . ${{ env.PROJECT_NAME }}/
+      - name: Move files to botiga (lowercase) directory
+        run: shopt -s extglob dotglob && mv !(${{ env.PROJECT_NAME }}) ${{ env.PROJECT_NAME }} && shopt -u dotglob
 
       - name: Create Zip
         run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
@@ -88,7 +88,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}
-          path: ${{ env.PROJECT_NAME }}
+          path: .
 
       - name: Remove the (temporary) zip directory
         run: rm -r ${{ env.PROJECT_NAME }}
