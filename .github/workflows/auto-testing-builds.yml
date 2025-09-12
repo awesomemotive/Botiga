@@ -5,6 +5,9 @@ name: Auto-testing-builds & Deployments
 on:
   push:
 
+env:
+  builds-directory: ~/builds/athemes
+
 # Defines the jobs that will be executed as part of this workflow.
 jobs:
   create-testing-build:
@@ -30,33 +33,9 @@ jobs:
           repo_short_name="${repo_full_name##*/}"
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
 
-      # The following steps are for uploading the build to hub.wpforms.com.
-      # Sets up an SSH key to securely connect to the deployment server.
-      # The private key is stored as a secret.
-      - name: Setup SSH key for hub.wpforms.com upload
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          chmod 700 ~/.ssh
-
-      - name: Download artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ env.PROJECT_NAME }}
-          path: ${{ env.PROJECT_NAME }}
-      - run: zip -qq -r ${{ env.PROJECT_NAME }}.zip ${{ env.PROJECT_NAME }}
-
-      # Creates the necessary directory structure on the local runner before uploading.
-      - name: Create builds directory structure
-        run: |
-          mkdir -p builds/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
-          cp ${{ env.PROJECT_NAME }}.zip builds/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/
-
-      # Uploads the build to the deployment server using rsync over SSH.
+      # Uploads the build to the server using rsync over SSH.
       # --rsh: Specifies the remote shell to use (ssh with specific options).
       # -o StrictHostKeyChecking=no: Disables host key checking.
-      # -p18765: Specifies the port for the SSH connection.
       # --ignore-times: Doesn\'t skip files that have the same size and modification time.
       # --archive: Archive mode, equivalent to -rlptgoD.
       # --verbose: Increases verbosity.
@@ -64,7 +43,6 @@ jobs:
       # --human-readable: Outputs numbers in a human-readable format.
       # --progress: Shows progress during transfer.
       # --whole-file: Copies files whole (without delta-xfer algorithm).
-      # --remove-source-files: Removes files from the source directory after they are transferred.
       - name: Upload to hub.wpforms.com
         run: |
           rsync --rsh="ssh -o StrictHostKeyChecking=no -p18765" \
@@ -76,5 +54,5 @@ jobs:
                 --progress \
                 --whole-file \
                 --remove-source-files \
-                builds/ \
-                staging@34.68.130.55:/home/staging/shared/hub.wpforms.com/builds/athemes/
+                ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/${{ env.PROJECT_NAME }}.zip \
+                staging@34.68.130.55:/home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/
