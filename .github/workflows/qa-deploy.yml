@@ -4,6 +4,9 @@ on:
 #    branches:
 #      - develop
 
+env:
+  builds-directory: ~/builds/athemes
+
 jobs:
   build:
     # We are using @feature/394-modular-workflows just for testing
@@ -13,12 +16,9 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - name: Setup SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          chmod 700 ~/.ssh
+      # This action exposes GitHub environment variables, making them available in subsequent steps.
+      - name: GitHub Environment Variables Action
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
 
       # Sets a project name based on the GitHub repository name.
       # It extracts the repository name, converts it to lowercase, and saves it as an environment variable PROJECT_NAME.
@@ -27,16 +27,6 @@ jobs:
           repo_full_name="${{ github.repository }}"
           repo_short_name="${repo_full_name##*/}"
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
-
-      - name: Download artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ env.PROJECT_NAME }}
-          path: ${{ env.PROJECT_NAME }}
-      - run: zip -qq -r ${{ env.PROJECT_NAME }}.zip ${{ env.PROJECT_NAME }}
-
-      - name: Clean up old zip artifact on server
-        run: ssh -o StrictHostKeyChecking=no qabotigaathemes@159.89.184.130 "rm -rf /sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/${{ env.PROJECT_NAME }}.zip"
 
       - name: Upload to qa-botiga.athemes.wpfc.io
         run: |
@@ -48,8 +38,7 @@ jobs:
              --human-readable \
              --progress \
              --whole-file \
-             --remove-source-files \
-             ${{ env.PROJECT_NAME }}.zip \
+             ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/${{ env.PROJECT_NAME }}.zip \
              qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/
 
       - name: Install on qa-botiga.athemes.wpfc.io
