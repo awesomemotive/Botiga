@@ -73,7 +73,7 @@ jobs:
         run: mkdir ${{ env.PROJECT_NAME }}
 
       - name: Move files to botiga (lowercase) directory
-        run: shopt -s extglob dotglob && mv !\(${{ env.PROJECT_NAME }}\) ${{ env.PROJECT_NAME }} && shopt -u dotglob
+        run: mv * ${{ env.PROJECT_NAME }}
 
       - name: Create Zip
         run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
