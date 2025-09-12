@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    # We are using @feature/394-modular-workflows just for testing
     uses: awesomemotive/Botiga/.github/workflows/build.yml@feature/394-modular-workflows
 
   deploy:
