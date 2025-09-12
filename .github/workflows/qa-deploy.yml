@@ -41,6 +41,9 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -lh
 
+      - name: Clean up old zip artifact on server
+        run: ssh user@host "rm -rf /sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/${{ env.PROJECT_NAME }}.zip"
+
       - name: Upload to qa-botiga.athemes.wpfc.io
         run: |
           rsync --rsh="ssh -o StrictHostKeyChecking=no" \
