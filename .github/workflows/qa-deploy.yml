@@ -38,7 +38,7 @@ jobs:
           path: ${{ env.PROJECT_NAME }}.zip
 
       - name: Display structure of downloaded files
-        run: ls -R
+        run: ls -lh
 
       - name: Upload to qa-botiga.athemes.wpfc.io
         run: |
