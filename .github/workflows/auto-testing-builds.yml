@@ -53,6 +53,5 @@ jobs:
                 --human-readable \
                 --progress \
                 --whole-file \
-                --remove-source-files \
                 ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/${{ env.PROJECT_NAME }}.zip \
                 staging@34.68.130.55:/home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/
