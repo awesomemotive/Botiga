@@ -11,7 +11,7 @@ env:
 # Defines the jobs that will be executed as part of this workflow.
 jobs:
   create-testing-build:
-    uses: awesomemotive/Botiga/.github/workflows/build.yml
+    uses: awesomemotive/Botiga/.github/workflows/build.yml@main
 
   upload-testing-build:
     name: Prepare and upload builds in hub.wpforms.com/builds

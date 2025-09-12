@@ -9,7 +9,7 @@ on:
 
 jobs:
   create-project-build:
-    uses: awesomemotive/Botiga/.github/workflows/build.yml
+    uses: awesomemotive/Botiga/.github/workflows/build.yml@main
 
   build-theme-zip-asset:
     runs-on: self-hosted

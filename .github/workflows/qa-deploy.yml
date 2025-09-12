@@ -1,15 +1,15 @@
 name: QA-wpfcio-deployment
 on:
   push:
-#    branches:
-#      - develop
+    branches:
+      - develop
 
 env:
   builds-directory: ~/builds/athemes
 
 jobs:
   build:
-    uses: awesomemotive/Botiga/.github/workflows/build.yml
+    uses: awesomemotive/Botiga/.github/workflows/build.yml@main
 
   QA-wpfcio-deployment:
     runs-on: self-hosted
