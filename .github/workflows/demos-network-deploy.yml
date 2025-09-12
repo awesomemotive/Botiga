@@ -17,6 +17,12 @@ jobs:
     needs: create-project-build
 
     steps:
+      - name: Set Project Name
+        run: |
+          repo_full_name="${{ github.repository }}"
+          repo_short_name="${repo_full_name##*/}"
+          echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
+
       - name: Download artifact
         uses: actions/download-artifact@v5
         with:
