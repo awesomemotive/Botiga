@@ -5,9 +5,10 @@ name: Auto-builds PR Cleanup
 on:
   pull_request:
     types: [ closed ]
+    branches-ignore: [ main ]
 
 jobs:
-  build:
+  cleaning:
     # The type of runner that the job will run on.
     runs-on: ubuntu-22.04
 
@@ -15,6 +16,13 @@ jobs:
       # This action exposes GitHub environment variables to be used in subsequent steps.
       - name: GitHub Environment Variables Action
         uses: FranzDiebold/github-env-vars-action@v2.8.0
+
+      # This step installs the SSH key to allow the runner to authenticate with the staging server.
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
       # This step sets a project name environment variable based on the repository name.
       # It takes the full repository name (e.g., "owner/repo"), extracts the repository name part,
@@ -34,7 +42,10 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           chmod 700 ~/.ssh
 
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p 18765 -H ${{ secrets.WPFORMS_STAGING_HOST }} >> ~/.ssh/known_hosts
+
       # This step connects to the staging server via SSH and deletes the build directory
       # associated with the closed pull request's branch.
       - name: Delete builds from merged branch
-        run: ssh -p18765 staging@34.68.130.55 "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_REF_NAME_SLUG }}"
+        run: ssh -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_ACTION_REF_NAME_SLUG }}"
