@@ -15,6 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # This action exposes GitHub environment variables, making them available in subsequent steps.
+      - name: GitHub Environment Variables Action
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
+
       - name: Set Project Name
         run: |
           repo_full_name="${{ github.repository }}"
