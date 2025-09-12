@@ -44,8 +44,6 @@ jobs:
       - name: Clean unneeded files
         run: |
           [ -f .gitattributes ] && rm .gitattributes
-          [ -d .github ] && rm -r .github
-          [ -d .git ] && rm -r .git
           [ -f .gitignore ] && rm .gitignore
           [ -f phpcs.xml ] && rm phpcs.xml
           [ -f wpgulp.config.js ] && rm wpgulp.config.js
@@ -56,6 +54,9 @@ jobs:
           [ -f package-lock.json ] && rm package-lock.json
           [ -f readme.md ] && rm readme.md
           [ -f playwright.config.js ] && rm playwright.config.js
+          [ -d .github ] && rm -r .github
+          [ -d .git ] && rm -r .git
+          [ -d .cursor ] && rm -r .cursor
           [ -d assets/sass ] && rm -r assets/sass
           [ -d assets/js/src ] && rm -r assets/js/src
           [ -d node_modules ] && rm -r node_modules
