@@ -1,4 +1,6 @@
-name: "Reusable Workflow"
+# GitHub Actions Workflow for bundling production theme zip file and attach it as an artifact in the workflow
+
+name: Build project artifact
 on:
   workflow_call:
 
@@ -33,7 +35,7 @@ jobs:
       - name: Install nodejs dependencies
         run: npm install
 
-      - name: Generate production build
+      - name: Generate build assets
         run: npm run production
 
       - name: Generate translation files
@@ -60,13 +62,13 @@ jobs:
           [ -d e2etests ] && rm -r e2etests
 
       - name: Create directory for artifacts
-        run: mkdir botiga
+        run: mkdir ${{ env.PROJECT_NAME }}
 
       - name: Move files to botiga directory
-        run: rsync -av --progress --exclude=botiga . botiga/
+        run: rsync -av --progress --exclude=${{ env.PROJECT_NAME }} . ${{ env.PROJECT_NAME }}/
 
       - name: Create Artifact
-        run: zip -qq -r "botiga.zip" botiga/
+        run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

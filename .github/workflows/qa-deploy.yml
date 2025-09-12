@@ -1,4 +1,4 @@
-name: qa-deployment
+name: QA-wpfcio-deployment
 on:
   push:
 #    branches:
@@ -9,7 +9,7 @@ jobs:
     # We are using @feature/394-modular-workflows just for testing
     uses: awesomemotive/Botiga/.github/workflows/build.yml@feature/394-modular-workflows
 
-  deploy:
+  QA-wpfcio-deployment:
     runs-on: ubuntu-22.04
     needs: build
     steps:
@@ -38,10 +38,6 @@ jobs:
           name: ${{ env.PROJECT_NAME }}
           path: ${{ env.PROJECT_NAME }}
       - run: zip -qq -r ${{ env.PROJECT_NAME }}.zip ${{ env.PROJECT_NAME }}
-
-      - name: Display structure of downloaded files
-        #todo: remove this step
-        run: ls -lh
 
       - name: Clean up old zip artifact on server
         run: ssh -o StrictHostKeyChecking=no qabotigaathemes@159.89.184.130 "rm -rf /sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/${{ env.PROJECT_NAME }}.zip"
