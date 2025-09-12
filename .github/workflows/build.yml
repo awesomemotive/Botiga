@@ -4,6 +4,9 @@ name: Build project artifact
 on:
   workflow_call:
 
+env:
+  builds-directory: ~/builds/athemes
+
 jobs:
   create-build-artifact:
     runs-on: self-hosted
@@ -62,17 +65,23 @@ jobs:
           [ -d node_modules ] && rm -r node_modules
           [ -d e2etests ] && rm -r e2etests
 
-      - name: Create directory for artifacts
+      - name: Create directory for build zip
         run: mkdir ${{ env.PROJECT_NAME }}
 
-      - name: Move files to botiga directory
+      - name: Copy files to botiga directory
         run: rsync -av --progress --exclude=${{ env.PROJECT_NAME }} . ${{ env.PROJECT_NAME }}/
 
-      - name: Create Artifact
+      - name: Create Zip
         run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
+
+      - name: Prepare builds directory
+        run: mkdir -p ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
+
+      - name: Move zip to build directory
+        run: mv ${{ env.PROJECT_NAME }}.zip ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}
-          path: ${{ env.PROJECT_NAME }}.zip
+          path: ${{ env.PROJECT_NAME }}
