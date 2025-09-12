@@ -3,7 +3,7 @@ on:
   workflow_call:
 
 jobs:
-  reusable_example:
+  create-build-artifact:
     runs-on: ubuntu-22.04
 
     steps:
