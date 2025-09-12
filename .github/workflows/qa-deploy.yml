@@ -20,10 +20,6 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           chmod 700 ~/.ssh
 
-      # This action exposes GitHub environment variables, making them available in subsequent steps.
-      - name: GitHub Environment Variables Action
-        uses: FranzDiebold/github-env-vars-action@v2.8.0
-
       # Sets a project name based on the GitHub repository name.
       # It extracts the repository name, converts it to lowercase, and saves it as an environment variable PROJECT_NAME.
       - name: Set Project Name
