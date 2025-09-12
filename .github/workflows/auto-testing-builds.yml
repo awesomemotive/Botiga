@@ -22,6 +22,12 @@ jobs:
       - name: GitHub Environment Variables Action
         uses: FranzDiebold/github-env-vars-action@v2.8.0
 
+      - name: Set Project Name
+        run: |
+          repo_full_name="${{ github.repository }}"
+          repo_short_name="${repo_full_name##*/}"
+          echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
+
       # The following steps are for uploading the build to hub.wpforms.com.
       # Sets up an SSH key to securely connect to the deployment server.
       # The private key is stored as a secret.
