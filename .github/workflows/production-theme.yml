@@ -9,8 +9,7 @@ on:
 
 jobs:
   create-project-build:
-    # We are using @feature/394-modular-workflows just for testing
-    uses: awesomemotive/Botiga/.github/workflows/build.yml@feature/394-modular-workflows
+    uses: awesomemotive/Botiga/.github/workflows/build.yml
 
   build-theme-zip-asset:
     runs-on: self-hosted
