@@ -10,10 +10,13 @@ name: Auto-builds Daily Cleanup
   schedule:
     - cron: '1 0 * * *' # Runs the workflow every day at 00:01.
 
+env:
+  builds-directory: ~/builds/athemes
+
 jobs:
   cleaning:
     name: Delete builds for non existing branches
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
 
@@ -25,13 +28,6 @@ jobs:
       - name: GitHub Environment Variables Action
         uses: FranzDiebold/github-env-vars-action@v2.8.0
 
-        # This step installs the SSH key to allow the runner to authenticate with the staging server.
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-
       # This step extracts the repository name from the full repository path and sets it as a PROJECT_NAME environment variable.
       # e.g. if the repository is aThemes/merchant, the project name will be "merchant".
       - name: Set Project Name
@@ -39,19 +35,6 @@ jobs:
           repo_full_name="${{ github.repository }}"
           repo_short_name="${repo_full_name##*/}"
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
-
-      # This step sets up an SSH key to allow the workflow to connect to the staging server.
-      # The private key is stored as a secret in the GitHub repository.
-      - name: Setup SSH key for hub.wpforms.com upload
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          chmod 700 ~/.ssh
-
-      # This step adds the known hosts to the SSH key.
-      - name: Adding Known Hosts
-        run: ssh-keyscan -p 18765 -H ${{ secrets.WPFORMS_STAGING_HOST }} >> ~/.ssh/known_hosts
 
       # This step fetches the latest list of remote branches, formats the branch names, and saves them to a file named branches.txt.
       # The formatting removes the "origin/" prefix and replaces slashes and dots with hyphens.
@@ -85,3 +68,18 @@ jobs:
               ssh -n -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf $dir"
             fi
           done < auto-builds.txt
+
+      # The list of auto-builds is saved to a file named auto-builds.txt.
+      - name: Get list of local builds
+        run: cd ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} && ls > local-builds.txt
+
+      - name: Delete local builds if they're not in the list of branches
+        run: |
+          while read -r dir; do
+            echo "Checking auto-build: $dir"
+            if ! grep -q "$dir" branches.txt
+            then
+              echo "Deleting local-build: $dir"
+              cd ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} && rm -rf $dir"
+            fi
+          done < local-builds.txt
