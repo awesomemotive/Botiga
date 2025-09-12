@@ -8,13 +8,13 @@ on:
       - "*"
 
 jobs:
-  create-testing-build:
+  create-project-build:
     # We are using @feature/394-modular-workflows just for testing
     uses: awesomemotive/Botiga/.github/workflows/build.yml@feature/394-modular-workflows
 
   build-theme-zip-asset:
     runs-on: ubuntu-22.04
-
+    needs: create-project-build
     steps:
       - name: Set Project Name
         run: |
