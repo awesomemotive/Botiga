@@ -15,6 +15,7 @@ jobs:
     name: Prepare and upload builds in hub.wpforms.com/builds
     # Specifies the runner environment for the job. In this case, it\'s Ubuntu 22.04.
     runs-on: ubuntu-22.04
+    needs: create-testing-build
 
     # Defines the sequence of steps that make up the \'build\' job.
     steps:
