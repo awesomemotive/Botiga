@@ -1,0 +1,46 @@
+name: QA-wpfcio-deployment
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  builds-directory: ~/builds/athemes
+
+jobs:
+  build:
+    uses: awesomemotive/Botiga/.github/workflows/build.yml@main
+
+  QA-wpfcio-deployment:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      # This action exposes GitHub environment variables, making them available in subsequent steps.
+      - name: GitHub Environment Variables Action
+        uses: FranzDiebold/github-env-vars-action@v2.8.0
+
+      # Sets a project name based on the GitHub repository name.
+      # It extracts the repository name, converts it to lowercase, and saves it as an environment variable PROJECT_NAME.
+      - name: Set Project Name
+        run: |
+          repo_full_name="${{ github.repository }}"
+          repo_short_name="${repo_full_name##*/}"
+          echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
+
+      - name: Upload to qa-botiga.athemes.wpfc.io
+        run: |
+          rsync --rsh="ssh -o StrictHostKeyChecking=no" \
+             --ignore-times \
+             --archive \
+             --verbose \
+             --compress \
+             --human-readable \
+             --progress \
+             --whole-file \
+             ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/${{ env.PROJECT_NAME }}.zip \
+             qabotigaathemes@159.89.184.130:/sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes/
+
+      - name: Install on qa-botiga.athemes.wpfc.io
+        run: |
+          echo "Installing: ${{ env.PROJECT_NAME }}.zip"
+          ssh -o StrictHostKeyChecking=no qabotigaathemes@159.89.184.130 "cd /sites/qa-botiga.athemes.wpfc.io/files/wp-content/themes && rm -rf ${{ env.PROJECT_NAME }} && unzip ${{ env.PROJECT_NAME }}.zip && rm ${{ env.PROJECT_NAME }}.zip" < /dev/null
