@@ -13,7 +13,7 @@ jobs:
     uses: awesomemotive/Botiga/.github/workflows/build.yml@feature/394-modular-workflows
 
   deploy:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: create-project-build
 
     steps:

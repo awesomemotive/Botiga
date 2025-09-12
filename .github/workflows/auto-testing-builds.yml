@@ -14,7 +14,7 @@ jobs:
   upload-testing-build:
     name: Prepare and upload builds in hub.wpforms.com/builds
     # Specifies the runner environment for the job. In this case, it\'s Ubuntu 22.04.
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     needs: create-testing-build
     if: "!contains(github.event.head_commit.message, 'ci skip')"
 
