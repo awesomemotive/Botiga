@@ -20,8 +20,8 @@
 					display: flex;
 					flex-wrap: wrap;
 	
-					li + li {
-						//margin-left: 35px;
+					> li + li {
+						margin-left: 35px;
 					}
 				}
 			}
