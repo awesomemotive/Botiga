@@ -35,7 +35,7 @@ body {
 
 		svg {
 			&:not(.stroke-based) {
-				fill: $color__white;
+				fill: $color__white; // change the default color to white
 			}
 		}
 	}	
