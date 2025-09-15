@@ -5,11 +5,15 @@ name: Auto-builds PR Cleanup
 on:
   pull_request:
     types: [ closed ]
+    branches-ignore: [ main ]
+
+env:
+  builds-directory: ~/builds/athemes
 
 jobs:
-  build:
+  cleaning:
     # The type of runner that the job will run on.
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
       # This action exposes GitHub environment variables to be used in subsequent steps.
@@ -25,16 +29,10 @@ jobs:
           repo_short_name="${repo_full_name##*/}"
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
 
-      # This step sets up an SSH key to allow the runner to authenticate with the staging server.
-      # It creates the .ssh directory, writes the private key from secrets, and sets the correct permissions.
-      - name: Setup SSH key for hub.wpforms.com upload
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          chmod 700 ~/.ssh
+      - name: Delete merged branch from local builds directory
+        run: rm -r ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
 
       # This step connects to the staging server via SSH and deletes the build directory
       # associated with the closed pull request's branch.
-      - name: Delete builds from merged branch
-        run: ssh -p18765 staging@34.68.130.55 "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_REF_NAME_SLUG }}"
+      - name: Delete merged branch from hub.wpforms.com/builds
+        run: ssh -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_ACTION_REF_NAME_SLUG }}"

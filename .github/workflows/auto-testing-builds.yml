@@ -5,11 +5,19 @@ name: Auto-testing-builds & Deployments
 on:
   push:
 
+env:
+  builds-directory: ~/builds/athemes
+
 # Defines the jobs that will be executed as part of this workflow.
 jobs:
-  build:
-    # Specifies the runner environment for the job. In this case, it\'s Ubuntu 22.04.
-    runs-on: ubuntu-22.04
+  create-testing-build:
+    uses: awesomemotive/Botiga/.github/workflows/build.yml@main
+
+  upload-testing-build:
+    name: Prepare and upload builds in hub.wpforms.com/builds
+    runs-on: self-hosted
+    needs: create-testing-build
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
 
     # Defines the sequence of steps that make up the \'build\' job.
     steps:
@@ -17,106 +25,15 @@ jobs:
       - name: GitHub Environment Variables Action
         uses: FranzDiebold/github-env-vars-action@v2.8.0
 
-      # Sets a project name based on the GitHub repository name.
-      # It extracts the repository name, converts it to lowercase, and saves it as an environment variable PROJECT_NAME.
       - name: Set Project Name
         run: |
           repo_full_name="${{ github.repository }}"
           repo_short_name="${repo_full_name##*/}"
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
 
-      # Checks out the repository\'s code so the workflow can access it.
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Sets up PHP version 8.0 and installs Composer.
-      - name: Setup PHP 8.0
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.0
-          tools: composer
-
-      # Installs Node.js version 21.
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 21
-
-      # Installs PHP dependencies for a production environment using Composer.
-      # --no-dev: Skips development dependencies.
-      # --ignore-platform-reqs: Ignores PHP version and extension requirements.
-      # --prefer-dist: Downloads and unpacks archives instead of cloning from version control.
-      # --no-scripts: Prevents execution of scripts defined in composer.json.
-      # --optimize-autoloader: Converts PSR-0/4 rules into classmap rules for faster class loading.
-      - name: Install dependencies
-        run: composer install --no-dev --ignore-platform-reqs --prefer-dist --no-scripts --optimize-autoloader
-
-      # Installs Node.js dependencies using npm.
-      - name: Install nodejs dependencies
-        run: npm install
-
-      # Compiles and bundles assets for production.
-      - name: Generate production build
-        run: npm run production
-
-      # Generates translation files for the project.
-      - name: Generate translation files
-        run: npm run translate
-
-      # Removes unnecessary files and directories to create a clean build for deployment.
-      # This includes development-related files, version control directories, and source assets.
-      - name: Clean unneeded files
-        run: |
-          [ -f .gitattributes ] && rm .gitattributes
-          [ -d .github ] && rm -r .github
-          [ -d .git ] && rm -r .git
-          [ -f .gitignore ] && rm .gitignore
-          [ -f phpcs.xml ] && rm phpcs.xml
-          [ -f wpgulp.config.js ] && rm wpgulp.config.js
-          [ -f gulpfile.babel.js ] && rm gulpfile.babel.js
-          [ -f composer.json ] && rm composer.json
-          [ -f composer.lock ] && rm composer.lock
-          [ -f package.json ] && rm package.json
-          [ -f package-lock.json ] && rm package-lock.json
-          [ -f readme.md ] && rm readme.md
-          [ -f playwright.config.js ] && rm playwright.config.js
-          [ -d assets/sass ] && rm -r assets/sass
-          [ -d assets/js/src ] && rm -r assets/js/src
-          [ -d node_modules ] && rm -r node_modules
-          [ -d e2etests ] && rm -r e2etests
-
-      # Creates a new directory named after the project to hold the build files.
-      - name: Create directory for the build
-        run: mkdir ${{ env.PROJECT_NAME }}
-
-      # Moves all the cleaned project files into the newly created build directory.
-      - name: Move files to the build directory
-        run: rsync -av --progress --exclude=${{ env.PROJECT_NAME }} . ${{ env.PROJECT_NAME }}/
-
-      # Creates a zip archive of the build directory.
-      - name: Create Artifact
-        run: zip -qq -r "${{ env.PROJECT_NAME }}.zip" ${{ env.PROJECT_NAME }}/
-
-      # The following steps are for uploading the build to hub.wpforms.com.
-      # Sets up an SSH key to securely connect to the deployment server.
-      # The private key is stored as a secret.
-      - name: Setup SSH key for hub.wpforms.com upload
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.WPFORMS_TEST_DOCKER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          chmod 700 ~/.ssh
-
-      # Creates the necessary directory structure on the local runner before uploading.
-      - name: Create builds directory structure
-        run: |
-          mkdir -p builds/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
-          cp ${{ env.PROJECT_NAME }}.zip builds/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/
-
-      # Uploads the build to the deployment server using rsync over SSH.
+      # Uploads the build to the server using rsync over SSH.
       # --rsh: Specifies the remote shell to use (ssh with specific options).
       # -o StrictHostKeyChecking=no: Disables host key checking.
-      # -p18765: Specifies the port for the SSH connection.
       # --ignore-times: Doesn\'t skip files that have the same size and modification time.
       # --archive: Archive mode, equivalent to -rlptgoD.
       # --verbose: Increases verbosity.
@@ -124,7 +41,6 @@ jobs:
       # --human-readable: Outputs numbers in a human-readable format.
       # --progress: Shows progress during transfer.
       # --whole-file: Copies files whole (without delta-xfer algorithm).
-      # --remove-source-files: Removes files from the source directory after they are transferred.
       - name: Upload to hub.wpforms.com
         run: |
           rsync --rsh="ssh -o StrictHostKeyChecking=no -p18765" \
@@ -135,14 +51,5 @@ jobs:
                 --human-readable \
                 --progress \
                 --whole-file \
-                --remove-source-files \
-                builds/ \
-                staging@34.68.130.55:/home/staging/shared/hub.wpforms.com/builds/athemes/
-
-      # Uploads the generated zip file as a workflow artifact.
-      # This allows the build to be downloaded from the GitHub Actions run page.
-      - name: Upload file list as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.PROJECT_NAME }}.zip
-          path: ${{ env.PROJECT_NAME }}.zip
+                ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/${{ env.PROJECT_NAME }}.zip \
+                staging@34.68.130.55:/home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}/
