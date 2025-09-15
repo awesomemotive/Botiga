@@ -32,5 +32,11 @@ body {
 	.ws-svg-icon {
 		width: 24px;
 		height: 24px;
+
+		svg {
+			&:not(.stroke-based) {
+				fill: $color__white;
+			}
+		}
 	}	
 }
