@@ -71,7 +71,7 @@ jobs:
 
       # The list of auto-builds is saved to a file named auto-builds.txt.
       - name: Get list of local builds
-        run: cd ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} && ls > local-builds.txt
+        run: ls ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} > local-builds.txt
 
       - name: Delete local builds if they're not in the list of branches
         run: |
@@ -80,6 +80,6 @@ jobs:
             if ! grep -q "$dir" branches.txt
             then
               echo "Deleting local-build: $dir"
-              cd ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} && rm -rf $dir"
+              cd ${{ env.builds-directory }}/${{ env.PROJECT_NAME }} && rm -rf $dir
             fi
           done < local-builds.txt
