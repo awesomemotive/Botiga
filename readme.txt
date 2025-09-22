@@ -4,7 +4,7 @@ Contributors: athemes
 Tags: e-commerce, custom-menu, custom-logo, grid-layout, featured-images, right-sidebar, left-sidebar, custom-colors, editor-style, theme-options, threaded-comments, translation-ready, blog, one-column, two-columns, rtl-language-support, custom-background, custom-header, footer-widgets, post-formats, wide-blocks
 
 Requires at least: 5.4
-Version: 2.3.6
+Version: 2.3.7
 Tested up to: 6.8
 Requires PHP: 7
 Stable tag: 2.3.5
@@ -30,6 +30,12 @@ Launch your store with Botiga. A beautiful theme that is optimized for both the 
 Botiga includes support for WooCommerce and for Infinite Scroll in Jetpack.
 
 == Changelog ==
+= 2.3.7 =
+* Added - Support for x.com and Threads in the Header/Footer social icons component
+* Fixed - WooCommerce Account: Added margin to order actions button for better spacing
+* Fixed - WordPress.org Preview: Search bar now correctly displays the search icon
+* Fixed - Sub-pages are rendered as a dropdown submenu under the parent page instead of a bullet list
+
 = 2.3.6 =
 Fixed - Footer Builder: Fixed issue where header components appeared in the “Available Components” section
 Fixed - Header Builder: Bottom row is now independent when the main row is set to sticky
