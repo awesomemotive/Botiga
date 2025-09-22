@@ -30,7 +30,7 @@ jobs:
           echo "PROJECT_NAME=${repo_short_name,,}" >> $GITHUB_ENV
 
       - name: Delete merged branch from local builds directory
-        run: rm -r ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
+        run: rm -rf ${{ env.builds-directory }}/${{ env.PROJECT_NAME }}/${{ env.CI_REF_NAME_SLUG }}
 
       # This step connects to the staging server via SSH and deletes the build directory
       # associated with the closed pull request's branch.
