@@ -30,6 +30,7 @@ class Botiga_Merchant_Overlaping_Features {
 		'product-swatches',
 		'quick-links',
 		'google-autocomplete',
+		'free-shipping-progress-bar',
 	);
 
 	/**
@@ -38,15 +39,16 @@ class Botiga_Merchant_Overlaping_Features {
 	 * 
 	 */
 	public $modules_map = array(
-		'size-chart' => 'size-chart',
-		'sticky-add-to-cart' => 'sticky-add-to-cart',
-		'advanced-reviews' => 'advanced-reviews',
-		'buy-now' => 'buy-now',
-		'video-gallery' => array( 'product-video', 'product-audio' ),
-		'wishlist' => 'wishlist',
-		'product-swatches' => 'product-swatches',
-		'quick-links' => 'quick-social-links',
-		'google-autocomplete' => 'address-autocomplete',
+		'size-chart'                 => 'size-chart',
+		'sticky-add-to-cart'         => 'sticky-add-to-cart',
+		'advanced-reviews'           => 'advanced-reviews',
+		'buy-now'                    => 'buy-now',
+		'video-gallery'              => array( 'product-video', 'product-audio' ),
+		'wishlist'                   => 'wishlist',
+		'product-swatches'           => 'product-swatches',
+		'quick-links'                => 'quick-social-links',
+		'google-autocomplete'        => 'address-autocomplete',
+		'free-shipping-progress-bar' => 'free-shipping-progress-bar', 
 	);
 
 	/**
