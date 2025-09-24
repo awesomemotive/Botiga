@@ -30,6 +30,7 @@ class Botiga_Merchant_Overlaping_Features {
 		'product-swatches',
 		'quick-links',
 		'google-autocomplete',
+		'free-shipping-progress-bar',
 	);
 
 	/**
@@ -47,6 +48,7 @@ class Botiga_Merchant_Overlaping_Features {
 		'product-swatches' => 'product-swatches',
 		'quick-links' => 'quick-social-links',
 		'google-autocomplete' => 'address-autocomplete',
+		'free-shipping-progress-bar' => 'free-shipping-progress-bar', 
 	);
 
 	/**
