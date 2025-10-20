@@ -8,7 +8,7 @@
         "@babel/core": "^7.0.0",
         "@babel/preset-env": "^7.12.1",
         "@babel/register": "^7.0.0",
-        "@playwright/test": "^1.30.0",
+        "@playwright/test": "^1.56.1",
         "@wordpress/env": "^5.11.0",
         "beepbeep": "^1.2.2",
         "browser-sync": "^2.11.1",
