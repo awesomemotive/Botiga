@@ -28,9 +28,8 @@ function botiga_wishlist_button( $product = false, $do_echo = true  ) {
 	if( $product == false ) {
 		global $product; 
 	}
-
 	$product_id          = $product->get_id(); 
-	$is_wishlist_enabled = Botiga_Modules::is_module_active( 'wishlist' );
+	$is_wishlist_enabled = Botiga_Modules::is_module_active( 'wishlist' ) && class_exists( 'Botiga_Pro' );
 	$wishlist_layout     = get_theme_mod( 'shop_product_wishlist_layout', 'layout1' ); 
 	if ( ! $is_wishlist_enabled || $is_wishlist_enabled && 'layout1' === $wishlist_layout ) {
 		return '';
@@ -69,6 +68,11 @@ function botiga_single_wishlist_button( $product = false, $do_echo = true  ) {
 		global $product; 
 	}
 
+	$is_wishlist_enabled = Botiga_Modules::is_module_active( 'wishlist' ) && class_exists( 'Botiga_Pro' );
+	if( !$is_wishlist_enabled ) {
+		return '';
+	}
+	
 	$product_id        = $product->get_id(); 
 	$wishlist_layout   = get_theme_mod( 'shop_product_wishlist_layout', 'layout1' ); 
 	if( 'layout1' === $wishlist_layout ) {
