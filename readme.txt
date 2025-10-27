@@ -7,7 +7,7 @@ Requires at least: 5.4
 Version: 2.3.7
 Tested up to: 6.8
 Requires PHP: 7
-Stable tag: 2.3.7
+Stable tag: 2.3.8
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,11 +30,16 @@ Launch your store with Botiga. A beautiful theme that is optimized for both the 
 Botiga includes support for WooCommerce and for Infinite Scroll in Jetpack.
 
 == Changelog ==
+= 2.3.8 =
+Added - Conflict modal appears when Botiga’s Free Shipping is active and the user tries to enable Merchant’s Free Shipping, letting them choose which to use
+Fixed - Shipping Address field overflow issue on the checkout
+Fixed - Enabling wishlist only when Botiga Pro enabled
+
 = 2.3.7 =
-* Added - Support for x.com and Threads in the Header/Footer social icons component
-* Fixed - WooCommerce Account: Added margin to order actions button for better spacing
-* Fixed - WordPress.org Preview: Search bar now correctly displays the search icon
-* Fixed - Sub-pages are rendered as a dropdown submenu under the parent page instead of a bullet list
+Added - Support for x.com and Threads in the Header/Footer social icons component
+Fixed - WooCommerce Account: Added margin to order actions button for better spacing
+Fixed - WordPress.org Preview: Search bar now correctly displays the search icon
+Fixed - Sub-pages are rendered as a dropdown submenu under the parent page instead of a bullet list
 
 = 2.3.6 =
 Fixed - Footer Builder: Fixed issue where header components appeared in the “Available Components” section
