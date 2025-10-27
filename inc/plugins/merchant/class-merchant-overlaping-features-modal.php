@@ -111,6 +111,10 @@ class Botiga_Merchant_Overlaping_Features_Modal {
 			'module_id'  => 'google-autocomplete',
 			'customizer_section' => 'botiga_google_autocomplete_section',
 		),
+		'free-shipping-progress-bar' => array(
+			'has_module' => true,
+			'customizer_section' => 'botiga_section_free_shipping_progress_bar',
+		),
 	);
 
 	/**
