@@ -13,7 +13,7 @@ function botiga_product_card_hooks() {
 	$button_layout     = get_theme_mod( 'shop_product_add_to_cart_layout', 'layout3' );
 	$quick_view_layout = get_theme_mod( 'shop_product_quickview_layout', 'layout1' );
 	$wishlist_layout   = get_theme_mod( 'shop_product_wishlist_layout', 'layout1' );
-    $wishlist_enable   = Botiga_Modules::is_module_active( 'wishlist' );
+    $wishlist_enable   = Botiga_Modules::is_module_active( 'wishlist' ) && class_exists( 'Botiga_Pro' );
 	
     //Loop image wrapper extra class
 	$loop_image_wrap_extra_class = 'botiga-add-to-cart-button-'. $button_layout;
