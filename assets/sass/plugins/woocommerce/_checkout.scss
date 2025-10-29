@@ -46,6 +46,16 @@
 
 	.form-row {
 		margin-bottom: 20px;
+
+		&.woocommerce-invalid {
+			label {
+				color: #a00;
+			}
+
+			.woocommerce-terms-and-conditions-checkbox-text:after {
+				outline: 2px solid #a00;
+			}
+		}
 	}
 }
 
