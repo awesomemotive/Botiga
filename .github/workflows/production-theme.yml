@@ -26,7 +26,9 @@ jobs:
         with:
           name: ${{ env.PROJECT_NAME }}
           path: ${{ env.PROJECT_NAME }}
-      - run: zip -qq -r ${{ env.PROJECT_NAME }}.zip ${{ env.PROJECT_NAME }}
+
+      - name: Zip theme files without extra folder
+        run: cd ${{ env.PROJECT_NAME }} && zip -qq -r ../${{ env.PROJECT_NAME }}.zip .
 
       - name: Upload release attachment
         uses: svenstaro/upload-release-action@v2
@@ -34,6 +36,3 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.PROJECT_NAME }}.zip
           tag: ${{ github.ref_name }}
-          release_name: "Botiga ${{ github.ref_name }}"
-          overwrite: true
-          body: "Changelog: https://athemes.com/changelog/botiga/"

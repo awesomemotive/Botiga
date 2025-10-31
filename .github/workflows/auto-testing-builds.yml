@@ -5,6 +5,10 @@ name: Auto-testing-builds & Deployments
 on:
   push:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   builds-directory: ~/builds/athemes
 
