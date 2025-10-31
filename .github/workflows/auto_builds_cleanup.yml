@@ -35,4 +35,4 @@ jobs:
       # This step connects to the staging server via SSH and deletes the build directory
       # associated with the closed pull request's branch.
       - name: Delete merged branch from hub.wpforms.com/builds
-        run: ssh -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_ACTION_REF_NAME_SLUG }}"
+        run: ssh -o StrictHostKeyChecking=no -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf ${{ env.CI_ACTION_REF_NAME_SLUG }}"
