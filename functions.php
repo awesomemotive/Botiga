@@ -344,6 +344,8 @@ function botiga_scripts() {
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'settings' => array(
 			'misc' => array(
+                // Added in botiga pro
+                // inc/customizer/options/woocommerce/single-product/section-layout.php:70
                 'auto_select_variations' => get_theme_mod( 'auto_select_available_variations' ),
 				'dropdowns_hover_delay' => get_option( 'botiga_dropdowns_hover_delay', 'yes' ),
 			),
