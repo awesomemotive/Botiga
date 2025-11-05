@@ -49,6 +49,7 @@ $wp_customize->add_control(
 				'#customize-control-button_background',
 				'#customize-control-button',
 				'#customize-control-button_border',
+				'#customize-control-button_border_width',
 			)),
 		)
 	)
@@ -441,3 +442,26 @@ $wp_customize->add_control(
 		)
 	)
 );
+
+// Button Border Width
+$wp_customize->add_setting('button_border_width', array(
+	'default'           => 0,
+	'transport'         => 'postMessage',
+	'sanitize_callback' => 'absint',
+));
+$wp_customize->add_control(new Botiga_Responsive_Slider(
+	$wp_customize,
+	'button_border_width',
+	array(
+		'label'         => esc_html__('Border Width', 'botiga'),
+		'section'       => 'botiga_section_buttons',
+		'is_responsive' => 0,
+		'settings'      => array(
+			'size_desktop' => 'button_border_width',
+		),
+		'input_attrs' => array(
+			'min'   => 0,
+			'max'   => 10,
+		),
+	)
+));

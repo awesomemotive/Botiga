@@ -1,5 +1,5 @@
 button[class*="merchant-"]:not(.button) {
-    border: 2px solid var( --bt-color-button-border, #212121 );
+    border: var( --bt-border-width-button, 0px ) solid var( --bt-color-button-border, #212121 );
 	box-shadow: none;
 	background: var( --bt-color-button-bg, #212121 );
 	color: var( --bt-color-button, #FFF );
