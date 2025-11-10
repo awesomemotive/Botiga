@@ -4,10 +4,10 @@ Contributors: athemes
 Tags: e-commerce, custom-menu, custom-logo, grid-layout, featured-images, right-sidebar, left-sidebar, custom-colors, editor-style, theme-options, threaded-comments, translation-ready, blog, one-column, two-columns, rtl-language-support, custom-background, custom-header, footer-widgets, post-formats, wide-blocks
 
 Requires at least: 5.4
-Version: 2.3.7
+Version: 2.3.9
 Tested up to: 6.8
 Requires PHP: 7
-Stable tag: 2.3.8
+Stable tag: 2.3.9
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,10 @@ Launch your store with Botiga. A beautiful theme that is optimized for both the 
 Botiga includes support for WooCommerce and for Infinite Scroll in Jetpack.
 
 == Changelog ==
+= 2.3.9 =
+* Added - Added an option to set button border width in the Theme Customizer
+* Fixed - Highlighting the Terms & Conditions field and WooCommerce errors during checkout
+
 = 2.3.8 =
 Added - Conflict modal appears when Botiga’s Free Shipping is active and the user tries to enable Merchant’s Free Shipping, letting them choose which to use
 Fixed - Shipping Address field overflow issue on the checkout
