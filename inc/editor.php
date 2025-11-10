@@ -62,6 +62,7 @@ class Botiga_Block_Editor {
 	
 		$button_border_color = get_theme_mod( 'button_border_color', '#212121' );
 		$button_border_color_hover = get_theme_mod( 'button_border_color_hover', '#757575' );
+		$button_border_width = get_theme_mod( 'button_border_width', 0 );
 		$css .= "
 			div.editor-styles-wrapper .wp-block-button.is-style-outline .wp-block-button__link, 
 			div.editor-styles-wrapper .wp-block-button__link.is-style-outline,
@@ -70,6 +71,7 @@ class Botiga_Block_Editor {
 			div.editor-styles-wrapper input[type=\"button\"],
 			div.editor-styles-wrapper input[type=\"reset\"],
 			div.editor-styles-wrapper input[type=\"submit\"] { 
+				border-width:" . (int) $button_border_width . "px;
 				border-color:" . esc_attr( $button_border_color ) . ";
 			}
 	

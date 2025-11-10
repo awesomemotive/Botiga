@@ -752,6 +752,7 @@ if ( ! class_exists( 'Botiga_Custom_CSS' ) ) :
 			$button_text_transform = get_theme_mod( 'button_text_transform', 'uppercase' );
 			$button_border_color = get_theme_mod( 'button_border_color', '#212121' );
 			$button_border_color_hover = get_theme_mod( 'button_border_color_hover', '#757575' );
+			$button_border_width = get_theme_mod( 'button_border_width', 0 );
 
 			$css = self::get_background_color_css( 'color_forms_text', '', '{{SELECTOR_WRAPPER}}div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]::-webkit-slider-thumb', true );
 			$css .= "{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-field ::placeholder { color:" . esc_attr( $color_forms_placeholder ) . " !important;opacity:1;}" . "\n";
@@ -772,7 +773,7 @@ if ( ! class_exists( 'Botiga_Custom_CSS' ) ) :
 			$css .= self::get_color_css( 'button_color', '#FFF', '{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-submit:not(.has-text-color)', true );           
 			$css .= self::get_color_css( 'button_color_hover', '#FFF', '{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-submit:not(.has-text-color):hover', true );
 			
-			$css .= "{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-submit { border-color:" . esc_attr( $button_border_color ) . " !important;}" . "\n";
+			$css .= "{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-submit { border-width:" . (int) $button_border_width . "px !important; border-color:" . esc_attr( $button_border_color ) . " !important;}" . "\n";
 			$css .= "{{SELECTOR_WRAPPER}}.wpforms-block:not(.wpforms-render-modern) .wpforms-submit:hover { border-color:" . esc_attr( $button_border_color_hover ) . " !important;}" . "\n";
 
 			if ( 'block-editor' === $context ) {
@@ -1087,6 +1088,12 @@ if ( ! class_exists( 'Botiga_Custom_CSS' ) ) :
 						'setting'  => 'button_border_radius',
 						'defaults' => 0,
 						'name'     => '--bt-border-radius-button',
+						'unit'     => 'px',
+					),
+					array(
+						'setting'  => 'button_border_width',
+						'defaults' => 0,
+						'name'     => '--bt-border-width-button',
 						'unit'     => 'px',
 					),
 				)
