@@ -470,6 +470,63 @@ botiga.navigation = {
 
 };
 
+// Auto select single available variation
+botiga.autoSelectVariations = {
+	init: function () {
+		if (!botiga.settings?.misc?.auto_select_variations) {
+			return;
+		}
+		// Use event delegation on document to catch dynamically loaded forms
+		document.addEventListener('wc_variation_form', function (e) {
+			const form = e.target;
+			if (!form || !form.matches('.variations_form')) return;
+
+			// Get variation data from the form's dataset
+			const variationData = form.dataset.product_variations
+				? JSON.parse(form.dataset.product_variations)
+				: [];
+
+			// Filter for in-stock and purchasable variations
+			const availableVariations = variationData.filter(variation =>
+				variation.is_in_stock && variation.is_purchasable
+			);
+
+			// Proceed only if exactly one variation is available
+			if (availableVariations.length !== 1) return;
+
+			const singleVariation = availableVariations[0];
+			const attributes = singleVariation.attributes;
+
+			// Loop through each attribute and set the corresponding <select>
+			Object.keys(attributes).forEach(attributeName => {
+				const attributeValue = attributes[attributeName];
+				const select = form.querySelector(`select[name="${attributeName}"]`);
+
+				if (select) {
+					select.value = attributeValue;
+				}
+			});
+
+			// Trigger change on the first select to update WooCommerce UI
+			const firstSelect = form.querySelector('select');
+			if (firstSelect) {
+				firstSelect.dispatchEvent(new Event('change', { bubbles: true }));
+			}
+		}, true); // Use capture phase to ensure we catch the event early
+
+		// Also handle forms that are already on the page on load
+		document.querySelectorAll('.variations_form').forEach(form => {
+			if (form.dataset.product_variations) {
+				const event = new CustomEvent('wc_variation_form', {
+					bubbles: true,
+					cancelable: true
+				});
+				form.dispatchEvent(event);
+			}
+		});
+	}
+};
+
 /**
  * Desktop off canvas toggle navigation
  */
@@ -1828,6 +1885,7 @@ botiga.misc = {
 
 botiga.helpers.botigaDomReady( function() {
 	botiga.navigation.init();
+	botiga.autoSelectVariations.init();
 	botiga.desktopOffcanvasNav.init();
 	botiga.desktopOffCanvasToggleNav.init();
 	botiga.headerSearch.init();
