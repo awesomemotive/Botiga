@@ -49,7 +49,7 @@ jobs:
       # This step connects to the staging server via SSH and lists the contents of the auto-builds directory for the current project.
       # The list of auto-builds is saved to a file named auto-builds.txt.
       - name: Get list of auto-builds
-        run: ssh -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && ls" > auto-builds.txt
+        run: ssh -o StrictHostKeyChecking=no -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && ls" > auto-builds.txt
 
       # This step reads the auto-builds.txt file line by line.
       # For each auto-build, it checks if a corresponding branch exists in the branches.txt file.
@@ -65,7 +65,7 @@ jobs:
             if ! grep -q "$dir" branches.txt
             then
               echo "Deleting auto-build: $dir"
-              ssh -n -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf $dir"
+              ssh -o StrictHostKeyChecking=no -n -p18765 staging@${{ secrets.WPFORMS_STAGING_HOST }} "cd /home/staging/shared/hub.wpforms.com/builds/athemes/${{ env.PROJECT_NAME }} && rm -rf $dir"
             fi
           done < auto-builds.txt
 
