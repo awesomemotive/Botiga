@@ -915,3 +915,27 @@ function botiga_shop_product_title_font_library_custom_and_custom_style() {
 		return false;
 	}
 }
+
+/**
+ * Show product card style–dependent controls only when needed.
+ *
+ * @param WP_Customize_Control $control Customizer control instance.
+ *
+ * @return bool
+ */
+function botiga_show_product_card_style_dependent_controls( $control ) {
+	
+	$card_style_setting = $control->manager->get_setting( 'shop_product_card_style' );
+
+	if ( ! $card_style_setting ) {
+		return false;
+	}
+
+	$card_style = $card_style_setting->value();
+
+	if ( $card_style === 'layout1' ) {
+		return false;
+	}
+
+	return true;
+}
