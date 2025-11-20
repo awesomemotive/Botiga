@@ -282,19 +282,20 @@ $wp_customize->add_setting( 'shop_product_card_radius', array(
     'sanitize_callback' => 'absint',
 ) );            
 $wp_customize->add_control( new Botiga_Responsive_Slider( $wp_customize, 'shop_product_card_radius',
-    array(
-        'label'         => esc_html__( 'Card radius', 'botiga' ),
-        'section'       => 'botiga_section_shop_archive_product_card',
-        'is_responsive' => 0,
-        'settings'      => array(
-            'size_desktop'      => 'shop_product_card_radius',
-        ),
-        'input_attrs' => array(
-            'min'   => 0,
-            'max'   => 100,
-        ),
-        'priority'   => 300,
-    )
+	array(
+		'label'           => esc_html__( 'Card radius', 'botiga' ),
+		'section'         => 'botiga_section_shop_archive_product_card',
+		'is_responsive'   => 0,
+		'settings'        => array(
+			'size_desktop' => 'shop_product_card_radius',
+		),
+		'input_attrs'     => array(
+			'min' => 0,
+			'max' => 100,
+		),
+		'priority'        => 300,
+		'active_callback' => 'botiga_show_product_card_style_dependent_controls',
+	)
 ) );
 
 // Product Card Image Radius
@@ -332,11 +333,12 @@ $wp_customize->add_control(
     new Botiga_Alpha_Color(
         $wp_customize,
         'shop_product_card_background',
-        array(
-            'label'             => esc_html__( 'Card background', 'botiga' ),
-            'section'           => 'botiga_section_shop_archive_product_card',
-            'priority'          => 320,
-        )
+		array(
+			'label'           => esc_html__( 'Card background', 'botiga' ),
+			'section'         => 'botiga_section_shop_archive_product_card',
+			'priority'        => 320,
+			'active_callback' => 'botiga_show_product_card_style_dependent_controls',
+		)
     )
 );
 
@@ -348,19 +350,20 @@ $wp_customize->add_setting( 'shop_product_card_border_size', array(
 ) );            
 
 $wp_customize->add_control( new Botiga_Responsive_Slider( $wp_customize, 'shop_product_card_border_size',
-    array(
-        'label'         => esc_html__( 'Border size', 'botiga' ),
-        'section'       => 'botiga_section_shop_archive_product_card',
-        'is_responsive' => 0,
-        'settings'      => array(
-            'size_desktop'      => 'shop_product_card_border_size',
-        ),
-        'input_attrs' => array(
-            'min'   => 0,
-            'max'   => 100,
-        ),
-        'priority'   => 350,
-    )
+	array(
+		'label'           => esc_html__( 'Border size', 'botiga' ),
+		'section'         => 'botiga_section_shop_archive_product_card',
+		'is_responsive'   => 0,
+		'settings'        => array(
+			'size_desktop' => 'shop_product_card_border_size',
+		),
+		'input_attrs'     => array(
+			'min' => 0,
+			'max' => 100,
+		),
+		'priority'        => 350,
+		'active_callback' => 'botiga_show_product_card_style_dependent_controls',
+	)
 ) );
 
 // Product Card Border Color
@@ -376,11 +379,12 @@ $wp_customize->add_control(
     new Botiga_Alpha_Color(
         $wp_customize,
         'shop_product_card_border_color',
-        array(
-            'label'             => esc_html__( 'Border color', 'botiga' ),
-            'section'           => 'botiga_section_shop_archive_product_card',
-            'priority'          => 360,
-        )
+		array(
+			'label'           => esc_html__( 'Border color', 'botiga' ),
+			'section'         => 'botiga_section_shop_archive_product_card',
+			'priority'        => 360,
+			'active_callback' => 'botiga_show_product_card_style_dependent_controls',
+		)
     )
 );
 
